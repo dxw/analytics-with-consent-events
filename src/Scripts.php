@@ -24,7 +24,7 @@ class Scripts implements \Dxw\Iguana\Registerable
             ]);
             // run script with onAccept
             add_filter('awc_civic_cookie_control_config', function (array $config) {
-                $config['optionalCookies'][0]['onAccept'] = 'analyticsWithConsentEvents.gaAddEvents';
+                $config['optionalCookies'][0]['onAccept'] = 'analyticsWithConsentEvents.init';
                 return $config;
             });
         }

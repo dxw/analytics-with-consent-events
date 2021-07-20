@@ -20,6 +20,12 @@ describe(Scripts::class, function () {
         });
     });
 
+    // mock get_site_url() for cli run of tests
+    function get_site_url()
+    {
+        return 'https://www.example.com';
+    }
+
     describe('->enqueueScripts()', function () {
         context('Civic Cookie API Key is not set', function () {
             it('does nothing', function () {
@@ -47,17 +53,14 @@ describe(Scripts::class, function () {
                     allow('dirname')->toBeCalled()->andReturn('/path/to/this/plugin');
                     allow('plugins_url')->toBeCalled()->andReturn('http://path/to/this/plugin/assets/js/analytics-events.js');
                     expect('plugins_url')->toBeCalled()->once()->with('/assets/js/analytics-events.js', '/path/to/this/plugin');
-                    expect('wp_enqueue_script')->toBeCalled()->once()->with('civicCookieControlAnalyticsEvents', 'http://path/to/this/plugin/assets/js/analytics.js', ['civicCookieControlDefaultAnalytics']);
+                    allow('get_site_url')->toBeCalled()->andReturn('https://www.example.com');
+                    expect('wp_enqueue_script')->toBeCalled()->once()->with('civicCookieControlAnalyticsEvents', 'http://path/to/this/plugin/assets/js/analytics-events.js', ['civicCookieControlDefaultAnalytics']);
                     allow('wp_localize_script')->toBeCalled();
                     expect('wp_localize_script')->toBeCalled()->once()->with('civicCookieControlAnalyticsEvents', 'cookieControlAnalyticsEvents', [
                         'googleAnalyticsId' => 'a_ga_id',
                         'siteurl' => 'https://www.example.com'
                     ]);
-                    // allow('apply_filters')->toBeCalled()->andRun(function ($filterName, $filteredData) {
-                    //     return $filteredData;
-                    // });
-                    //expect('apply_filters')->toBeCalled()->once()->with('awc_civic_cookie_control_config', \Kahlan\Arg::toBeAn('array'));
-                    //expect('wp_localize_script')->toBeCalled()->once()->with('civicCookieControlConfig', 'cookieControlConfig', \Kahlan\Arg::toBeAn('array'));
+                    allow('add_filter')->toBeCalled()->andReturn(\Kahlan\Arg::toBeAn('array'));
                     $this->scripts->enqueueScripts();
                 });
             });
