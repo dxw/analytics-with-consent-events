@@ -15,7 +15,7 @@ var analyticsWithConsentEvents = {
     let siteurl = cookieControlAnalyticsEvents.siteurl;
 
     // check links
-    $('a[href]').each(function() {
+    jQuery('a[href]').each(function() {
       // check if outbound (to another domain)
       let isOutbound = false;
       let fulllink = this.getAttribute('href');
@@ -96,7 +96,7 @@ var analyticsWithConsentEvents = {
     }
 
     // check links
-    $('a[href]').each(function() {
+    jQuery('a[href]').each(function() {
       let fulllink = this.getAttribute('href');
       let link = fulllink;
       if (link.indexOf('?') !== -1) {
